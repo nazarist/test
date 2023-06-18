@@ -1,0 +1,49 @@
+version: "3.3"
+
+networks:
+   back:
+      driver: bridge
+
+services:
+   nginx:
+      image: nginx:stable
+      volumes:
+         - ./_docker/nginx-back/conf.d/:/etc/nginx/conf.d/
+         - ./backend/:/var/www/backend/
+         - ./client/:/var/www/client/
+      ports:
+         - "80:80"
+      container_name: app_nginx
+      working_dir: /var/www/
+      networks:
+         - back
+
+   php:
+      build:
+         context: .
+         dockerfile: _docker/php/Dockerfile
+      restart: always
+      volumes:
+         - ./backend/:/var/www/backend/
+      container_name: app_php
+      networks:
+         - back
+
+   mysql:
+      image: mysql
+      restart: always
+      environment:
+         MYSQL_ROOT_PASSWORD: root
+      command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+      volumes:
+         - ./tmp/mysql/:/var/lib/mysql
+         - ./_docker/mysql/init/:/docker-entrypoint-initdb.d
+      ports:
+         - "3306:3306"
+      container_name: app_mysql
+      networks:
+         - back
+
+
+
+
