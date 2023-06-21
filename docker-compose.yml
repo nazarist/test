@@ -3,6 +3,8 @@ version: "3.3"
 networks:
    back:
       driver: bridge
+   front:
+      driver: bridge
 
 services:
    nginx:
@@ -17,12 +19,12 @@ services:
       working_dir: /var/www/
       networks:
          - back
+         - front
 
    php:
       build:
          context: .
          dockerfile: _docker/php/Dockerfile
-      restart: always
       volumes:
          - ./backend/:/var/www/backend/
       container_name: app_php
@@ -43,6 +45,17 @@ services:
       container_name: app_mysql
       networks:
          - back
+
+
+   node:
+      build:
+         context: .
+         dockerfile: _docker/node/Dockerfile
+      ports:
+         -  3000:3000
+      networks:
+         - front
+      container_name: app_node
 
 
 
