@@ -53,6 +53,8 @@ services:
          dockerfile: _docker/node/Dockerfile
       ports:
          -  3000:3000
+      volumes:
+         - ./client/:/var/www/client/
       networks:
          - front
       container_name: app_node

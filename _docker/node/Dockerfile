@@ -2,13 +2,13 @@ FROM node:latest
 
 WORKDIR /var/www/client/
 
-#COPY ./client/package.json .
+COPY ./client/package.json .
 
-#RUN npm install
+RUN npm install
 
-COPY . .
+COPY ./client/ .
 
 EXPOSE 3000
 
-#CMD ["npm", "start"]
+CMD ["npm", "start"]
 
