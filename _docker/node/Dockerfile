@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:16.20.0
 
 WORKDIR /var/www/client/
 
@@ -10,5 +10,6 @@ COPY ./client/ .
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD npm start
+
 
